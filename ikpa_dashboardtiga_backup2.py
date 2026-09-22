@@ -8804,12 +8804,12 @@ def page_dashboard():
             _kkp_tahun_list = sorted(df_kkp["TAHUN"].dropna().astype(int).unique())
             _kkp_tahun_terbaru = max(_kkp_tahun_list) if _kkp_tahun_list else int(pd.Timestamp.now().year)
 
-            st.markdown("**Filter KKP & CMS:**")
+            st.markdown("**Filter CMS:**")
             _kkp_col1, _kkp_col2, _kkp_col3 = st.columns(3)
 
             with _kkp_col1:
                 _kkp_periode = st.selectbox(
-                    "Periode KKP & CMS",
+                    "Periode CMS",
                     ["Bulanan", "Triwulan", "Tahunan"],
                     index=["Bulanan", "Triwulan", "Tahunan"].index(periode_chart),
                     key="kkp_chart_periode"
@@ -8817,7 +8817,7 @@ def page_dashboard():
 
             with _kkp_col2:
                 _kkp_tahun = st.selectbox(
-                    "Tahun KKP & CMS",
+                    "Tahun CMS",
                     _kkp_tahun_list,
                     index=_kkp_tahun_list.index(_kkp_tahun_terbaru) if _kkp_tahun_terbaru in _kkp_tahun_list else 0,
                     key="kkp_chart_tahun"
@@ -8839,7 +8839,7 @@ def page_dashboard():
                 _kkp_bulan_terbaru = max(_kkp_bulan_list) if _kkp_bulan_list else 1
                 with _kkp_col3:
                     _kkp_bulan_selected = st.selectbox(
-                        "Bulan KKP & CMS",
+                        "Bulan CMS",
                         _kkp_bulan_list,
                         index=_kkp_bulan_list.index(_kkp_bulan_terbaru) if _kkp_bulan_terbaru in _kkp_bulan_list else 0,
                         format_func=lambda x: _bulan_map_kkp.get(x, x),
@@ -8852,7 +8852,7 @@ def page_dashboard():
                 _kkp_tw_options = [f"TW{i}" for i in _kkp_tw_list]
                 with _kkp_col3:
                     _kkp_tw_selected = st.selectbox(
-                        "Triwulan KKP",
+                        "Triwulan CMS",
                         _kkp_tw_options,
                         index=len(_kkp_tw_options) - 1 if _kkp_tw_options else 0,
                         key="kkp_chart_tw"
