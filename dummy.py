@@ -1,12 +1,14 @@
+```python
 import streamlit as st
+import urllib.parse
 
 st.title("📱 Dummy Notifikasi Satker")
 
-# Data dummy untuk testing
+# Data dummy
 dummy_kontak = {
     "SATKER001": {
         "nama": "Satker Contoh 1",
-        "no_wa": "6281234567890"
+        "no_wa": "6281273737212"
     },
     "SATKER002": {
         "nama": "Satker Contoh 2",
@@ -20,13 +22,13 @@ kode_satker = st.selectbox(
     options=list(dummy_kontak.keys())
 )
 
-# Ambil data kontak berdasarkan kode Satker
+# Ambil data Satker
 data_satker = dummy_kontak[kode_satker]
 
 st.write("**Nama Satker:**", data_satker["nama"])
 st.write("**Nomor WhatsApp:**", data_satker["no_wa"])
 
-# Template pesan
+# Pesan
 pesan = st.text_area(
     "Pesan Notifikasi",
     value="""*REMINDER*
@@ -38,13 +40,20 @@ revolving UP.
 Atas kerja samanya diucapkan terima kasih 🙏"""
 )
 
-# Tombol simulasi
-if st.button("📤 Simulasi Kirim Notifikasi"):
+# Tombol buka WhatsApp
+if st.button("📱 Buka WhatsApp"):
 
-    st.info("Mengirim ke dummy broker...")
+    nomor = data_satker["no_wa"]
+    pesan_encoded = urllib.parse.quote(pesan)
 
-    st.success("✅ Dummy notifikasi berhasil diproses")
+    link_wa = f"https://wa.me/{nomor}?text={pesan_encoded}"
 
-    st.write("**Kode Satker:**", kode_satker)
-    st.write("**Nomor tujuan:**", data_satker["no_wa"])
-    st.write("**Status:** Simulasi berhasil")
+    st.success("✅ Nomor dan pesan berhasil disiapkan!")
+
+    st.markdown(
+        f"[➡️ Klik di sini untuk membuka WhatsApp]({link_wa})"
+    )
+
+    st.write("**Nomor tujuan:**", nomor)
+    st.write("**Status:** Siap dikirim melalui WhatsApp")
+```
