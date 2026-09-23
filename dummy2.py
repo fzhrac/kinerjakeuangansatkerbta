@@ -15335,10 +15335,29 @@ def page_notifikasi():
 
     st.title("📱 Notifikasi Satker")
 
-    st.write("### Data yang tersedia")
+    st.write("### Data Excel Asli")
 
-    st.write(
-        st.session_state.get("data_storage", {}).keys()
+    data_storage = st.session_state.get("data_storage", {})
+
+    if not data_storage:
+        st.warning("⚠️ Data Excel belum tersedia.")
+        return
+
+    # Ambil salah satu data yang tersedia
+    key = list(data_storage.keys())[0]
+    df = data_storage[key]
+
+    st.write("**Data:**", key)
+
+    st.write("### Kolom yang tersedia")
+
+    st.write(df.columns.tolist())
+
+    st.write("### Contoh Data")
+
+    st.dataframe(
+        df.head(10),
+        use_container_width=True
     )
     
 # ===============================
