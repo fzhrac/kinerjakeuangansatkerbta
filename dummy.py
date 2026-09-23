@@ -17,7 +17,7 @@ dummy_kontak = {
 
 # Pilih Satker
 kode_satker = st.selectbox(
-    "Pilih Kode Satker",
+    "Pilih Satker",
     options=list(dummy_kontak.keys())
 )
 
@@ -55,4 +55,3 @@ if st.button("📱 Buka WhatsApp"):
 
     st.write("**Nomor tujuan:**", nomor)
     st.write("**Status:** Siap dikirim melalui WhatsApp")
-```
