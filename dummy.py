@@ -7,11 +7,11 @@ st.title("📱 Dummy Notifikasi Satker")
 dummy_kontak = {
     "SATKER001": {
         "nama": "Satker Contoh 1",
-        "no_wa": "6281273737212"
+        "no_wa": "6281273737616"
     },
     "SATKER002": {
         "nama": "Satker Contoh 2",
-        "no_wa": "6289876543210"
+        "no_wa": "6281367998248"
     }
 }
 
