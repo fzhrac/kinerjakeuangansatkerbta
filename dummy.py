@@ -49,4 +49,3 @@ Atas kerja samanya diucapkan terima kasih 🙏"""
 else:
 
     st.success("✅ Satker belum perlu menerima reminder.")
-```
