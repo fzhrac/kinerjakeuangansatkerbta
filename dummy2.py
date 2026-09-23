@@ -15335,30 +15335,62 @@ def page_notifikasi():
 
     st.title("📱 Notifikasi Satker")
 
-    st.write("### Data Excel Asli")
+    st.write("### Data Satker")
 
-    data_storage = st.session_state.get("data_storage", {})
+    # ============================
+    # DATA DUMMY SATKER
+    # ============================
+    data_satker = {
+        "kode_satker": "SATKER001",
+        "nama": "Satker Contoh 1",
+        "no_wa": "6281273737212",
+        "sisa_hari": 2
+    }
 
-    if not data_storage:
-        st.warning("⚠️ Data Excel belum tersedia.")
-        return
+    st.write("**Kode Satker:**", data_satker["kode_satker"])
+    st.write("**Nama Satker:**", data_satker["nama"])
+    st.write("**Sisa hari:**", data_satker["sisa_hari"])
 
-    # Ambil salah satu data yang tersedia
-    key = list(data_storage.keys())[0]
-    df = data_storage[key]
+    # ============================
+    # TRIGGER NOTIFIKASI
+    # ============================
+    if data_satker["sisa_hari"] <= 2:
 
-    st.write("**Data:**", key)
+        st.warning("⚠️ Satker memenuhi kondisi untuk reminder.")
 
-    st.write("### Kolom yang tersedia")
+        # ============================
+        # PESAN REMINDER
+        # ============================
+        pesan = """*REMINDER*
 
-    st.write(df.columns.tolist())
+Sehubungan dengan batas revolving UP yang sudah mendekati,
+izin mengingatkan agar Bapak/Ibu dapat segera mengajukan
+revolving UP.
 
-    st.write("### Contoh Data")
+Atas kerja samanya diucapkan terima kasih 🙏"""
 
-    st.dataframe(
-        df.head(10),
-        use_container_width=True
-    )
+        st.text_area(
+            "Pesan Notifikasi",
+            value=pesan,
+            disabled=True
+        )
+
+        # ============================
+        # LINK WHATSAPP
+        # ============================
+        nomor = data_satker["no_wa"]
+
+        pesan_encoded = urllib.parse.quote(pesan)
+
+        link_wa = f"https://wa.me/{nomor}?text={pesan_encoded}"
+
+        st.markdown(
+            f"[📱 Buka WhatsApp dan Kirim Reminder]({link_wa})"
+        )
+
+    else:
+
+        st.success("✅ Satker belum perlu menerima reminder.")
     
 # ===============================
 # MAIN APP
