@@ -15343,7 +15343,7 @@ def page_notifikasi():
     data_satker = {
         "kode_satker": "SATKER001",
         "nama": "Satker Contoh 1",
-        "no_wa": "6281273737212",
+        "no_wa": "6281273737616",
         "sisa_hari": 2
     }
 
