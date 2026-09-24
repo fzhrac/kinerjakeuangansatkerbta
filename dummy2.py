@@ -15331,130 +15331,364 @@ st.markdown("""
 # ===============================
 # 📱 HALAMAN NOTIFIKASI SATKER
 # ===============================
-📱 Notifikasi Satker
-Data Satker
-Kode Satker: SATKER001
+def page_notifikasi():
 
-Nama Satker: Satker Contoh 1
+    # ============================================================
+    # CSS
+    # ============================================================
+    st.markdown("""
+    <style>
 
-Sisa hari: 2
+    .notif-title {
+        text-align: center;
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
 
-⚠️
-Satker memenuhi kondisi untuk reminder.
+    .notif-subtitle {
+        text-align: center;
+        color: #6b7280;
+        margin-bottom: 25px;
+    }
 
-Pesan Notifikasi
+    .summary-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 20px;
+        text-align: center;
+        background-color: white;
+        min-height: 115px;
+    }
 
-*REMINDER*
+    .summary-label {
+        font-size: 14px;
+        color: #6b7280;
+        margin-bottom: 8px;
+    }
+
+    .summary-number {
+        font-size: 30px;
+        font-weight: 700;
+    }
+
+    .satker-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 18px 20px;
+        margin: 12px 0;
+        background-color: white;
+    }
+
+    .satker-name {
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .satker-code {
+        font-size: 13px;
+        color: #6b7280;
+    }
+
+    .sisa-label {
+        text-align: center;
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    .sisa-value {
+        text-align: center;
+        font-size: 22px;
+        font-weight: 700;
+        margin-top: 4px;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+    # ============================================================
+    # HEADER
+    # ============================================================
+    st.markdown(
+        '<div class="notif-title">📱 Notifikasi Satker</div>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<div class="notif-subtitle">'
+        'Monitoring Satker yang memenuhi kondisi untuk menerima reminder.'
+        '</div>',
+        unsafe_allow_html=True
+    )
+
+    # ============================================================
+    # DATA DUMMY
+    # ============================================================
+    data_satker = [
+        {
+            "kode_satker": "SATKER001",
+            "nama": "Satker Contoh 1",
+            "no_wa": "6282379047217",
+            "sisa_hari": 2
+        },
+        {
+            "kode_satker": "SATKER002",
+            "nama": "Satker Contoh 2",
+            "no_wa": "6285764209323",
+            "sisa_hari": 1
+        },
+        {
+            "kode_satker": "SATKER003",
+            "nama": "Satker Contoh 3",
+            "no_wa": "6281273737616",
+            "sisa_hari": 2
+        },
+        {
+            "kode_satker": "SATKER004",
+            "nama": "Satker Contoh 4",
+            "no_wa": "6281234567801",
+            "sisa_hari": 5
+        },
+        {
+            "kode_satker": "SATKER005",
+            "nama": "Satker Contoh 5",
+            "no_wa": "6281234567802",
+            "sisa_hari": 7
+        },
+        {
+            "kode_satker": "SATKER006",
+            "nama": "Satker Contoh 6",
+            "no_wa": "6281234567803",
+            "sisa_hari": 10
+        },
+        {
+            "kode_satker": "SATKER007",
+            "nama": "Satker Contoh 7",
+            "no_wa": "6281234567804",
+            "sisa_hari": 4
+        },
+        {
+            "kode_satker": "SATKER008",
+            "nama": "Satker Contoh 8",
+            "no_wa": "6281234567805",
+            "sisa_hari": 8
+        },
+        {
+            "kode_satker": "SATKER009",
+            "nama": "Satker Contoh 9",
+            "no_wa": "6281234567806",
+            "sisa_hari": 6
+        },
+        {
+            "kode_satker": "SATKER010",
+            "nama": "Satker Contoh 10",
+            "no_wa": "6281234567807",
+            "sisa_hari": 12
+        }
+    ]
+
+    # ============================================================
+    # TRIGGER REMINDER
+    # ============================================================
+    # Sementara hanya untuk testing.
+    # Nanti diganti menggunakan data asli.
+
+    satker_perlu_reminder = [
+        satker
+        for satker in data_satker
+        if satker["sisa_hari"] <= 2
+    ]
+
+    total_satker = len(data_satker)
+    total_reminder = len(satker_perlu_reminder)
+    total_normal = total_satker - total_reminder
+
+    # ============================================================
+    # RINGKASAN
+    # ============================================================
+    st.markdown("### 📊 Ringkasan")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown(
+            f"""
+            <div class="summary-card">
+                <div class="summary-label">
+                    Total Satker
+                </div>
+                <div class="summary-number">
+                    {total_satker}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with col2:
+        st.markdown(
+            f"""
+            <div class="summary-card">
+                <div class="summary-label">
+                    ⚠️ Perlu Reminder
+                </div>
+                <div class="summary-number">
+                    {total_reminder}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with col3:
+        st.markdown(
+            f"""
+            <div class="summary-card">
+                <div class="summary-label">
+                    ✅ Tidak Perlu Reminder
+                </div>
+                <div class="summary-number">
+                    {total_normal}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # ============================================================
+    # DAFTAR SATKER YANG PERLU REMINDER
+    # ============================================================
+    st.markdown(
+        "### ⚠️ Satker yang Perlu Menerima Reminder"
+    )
+
+    if not satker_perlu_reminder:
+
+        st.success(
+            "Tidak terdapat Satker yang memenuhi kondisi reminder."
+        )
+
+    else:
+
+        st.info(
+            f"Terdapat **{total_reminder} Satker** "
+            "yang memenuhi kondisi untuk menerima reminder."
+        )
+
+        # ========================================================
+        # PESAN REMINDER
+        # ========================================================
+        pesan = """*REMINDER*
 
 Sehubungan dengan batas revolving UP yang sudah mendekati,
 izin mengingatkan agar Bapak/Ibu dapat segera mengajukan
 revolving UP.
 
-Atas kerja samanya diucapkan terima kasih 🙏
-📱 Buka WhatsApp dan Kirim Reminder
+Atas kerja samanya diucapkan terima kasih 🙏"""
 
-Kode Satker: SATKER002
+        # ========================================================
+        # CARD SATKER
+        # ========================================================
+        for satker in satker_perlu_reminder:
 
-Nama Satker: Satker Contoh 2
+            st.markdown(
+                '<div class="satker-card">',
+                unsafe_allow_html=True
+            )
 
-Sisa hari: 1
+            col1, col2, col3 = st.columns([4, 2, 2])
 
-⚠️
-Satker memenuhi kondisi untuk reminder.
+            # ----------------------------------------------------
+            # INFORMASI SATKER
+            # ----------------------------------------------------
+            with col1:
 
-Pesan Notifikasi
+                st.markdown(
+                    f"""
+                    <div class="satker-name">
+                        {satker["nama"]}
+                    </div>
 
-*REMINDER*
+                    <div class="satker-code">
+                        Kode Satker: {satker["kode_satker"]}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-Sehubungan dengan batas revolving UP yang sudah mendekati,
-izin mengingatkan agar Bapak/Ibu dapat segera mengajukan
-revolving UP.
+            # ----------------------------------------------------
+            # SISA WAKTU
+            # ----------------------------------------------------
+            with col2:
 
-Atas kerja samanya diucapkan terima kasih 🙏
-📱 Buka WhatsApp dan Kirim Reminder
+                st.markdown(
+                    f"""
+                    <div class="sisa-label">
+                        Sisa Waktu
+                    </div>
 
-Kode Satker: SATKER003
+                    <div class="sisa-value">
+                        ⚠️ {satker["sisa_hari"]} hari
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-Nama Satker: Satker Contoh 3
+            # ----------------------------------------------------
+            # LINK WHATSAPP
+            # ----------------------------------------------------
+            with col3:
 
-Sisa hari: 2
+                nomor = satker["no_wa"]
 
-⚠️
-Satker memenuhi kondisi untuk reminder.
+                pesan_encoded = urllib.parse.quote(pesan)
 
-Pesan Notifikasi
+                link_wa = (
+                    f"https://wa.me/{nomor}"
+                    f"?text={pesan_encoded}"
+                )
 
-*REMINDER*
+                st.markdown(
+                    f"""
+                    <div style="text-align:center; padding-top:8px;">
+                        <a href="{link_wa}"
+                           target="_blank"
+                           style="
+                           text-decoration:none;
+                           background:#25D366;
+                           color:white;
+                           padding:10px 16px;
+                           border-radius:8px;
+                           font-weight:600;
+                           display:inline-block;">
+                           📱 Kirim Reminder
+                        </a>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
-Sehubungan dengan batas revolving UP yang sudah mendekati,
-izin mengingatkan agar Bapak/Ibu dapat segera mengajukan
-revolving UP.
+            st.markdown(
+                "</div>",
+                unsafe_allow_html=True
+            )
 
-Atas kerja samanya diucapkan terima kasih 🙏
-📱 Buka WhatsApp dan Kirim Reminder
+            # ----------------------------------------------------
+            # DETAIL PESAN
+            # ----------------------------------------------------
+            with st.expander(
+                f"💬 Lihat pesan - {satker['kode_satker']}"
+            ):
 
-Kode Satker: SATKER004
-
-Nama Satker: Satker Contoh 4
-
-Sisa hari: 5
-
-✅
-Satker belum perlu menerima reminder.
-
-Kode Satker: SATKER005
-
-Nama Satker: Satker Contoh 5
-
-Sisa hari: 7
-
-✅
-Satker belum perlu menerima reminder.
-
-Kode Satker: SATKER006
-
-Nama Satker: Satker Contoh 6
-
-Sisa hari: 10
-
-✅
-Satker belum perlu menerima reminder.
-
-Kode Satker: SATKER007
-
-Nama Satker: Satker Contoh 7
-
-Sisa hari: 4
-
-✅
-Satker belum perlu menerima reminder.
-
-Kode Satker: SATKER008
-
-Nama Satker: Satker Contoh 8
-
-Sisa hari: 8
-
-✅
-Satker belum perlu menerima reminder.
-
-Kode Satker: SATKER009
-
-Nama Satker: Satker Contoh 9
-
-Sisa hari: 6
-
-✅
-Satker belum perlu menerima reminder.
-
-Kode Satker: SATKER010
-
-Nama Satker: Satker Contoh 10
-
-Sisa hari: 12
-
-✅
-Satker belum perlu menerima reminder.
+                st.text_area(
+                    "Pesan Notifikasi",
+                    value=pesan,
+                    disabled=True,
+                    key=f"pesan_{satker['kode_satker']}"
+                )
     
 # ===============================
 # MAIN APP
