@@ -15500,9 +15500,15 @@ def page_notifikasi():
         if satker["sisa_hari"] <= 2
     ]
 
+    satker_tidak_perlu_reminder = [
+        satker
+        for satker in data_satker
+        if satker["sisa_hari"] > 2
+    ]
+
     total_satker = len(data_satker)
     total_reminder = len(satker_perlu_reminder)
-    total_normal = total_satker - total_reminder
+    total_normal = len(satker_tidak_perlu_reminder)
 
     # ============================================================
     # RINGKASAN
@@ -15557,27 +15563,53 @@ def page_notifikasi():
         )
 
     st.markdown("<br>", unsafe_allow_html=True)
-
     # ============================================================
-    # DAFTAR SATKER YANG PERLU REMINDER
+    # PILIH DAFTAR SATKER
     # ============================================================
-    st.markdown(
-        "### ⚠️ Satker yang Perlu Menerima Reminder"
+    pilihan_satker = st.selectbox(
+        "🔎 Tampilkan Daftar Satker",
+        [
+            "⚠️ Satker Perlu Reminder",
+            "✅ Satker Tidak Perlu Reminder",
+            "📋 Semua Satker"
+        ]
     )
+    # ============================================================
+    # DAFTAR SATKER
+    # ============================================================
 
-    if not satker_perlu_reminder:
+    if pilihan_satker == "⚠️ Satker Perlu Reminder":
 
-        st.success(
-            "Tidak terdapat Satker yang memenuhi kondisi reminder."
+        st.markdown(
+            "### ⚠️ Satker yang Perlu Menerima Reminder"
         )
 
-    else:
-
         st.info(
-            f"Terdapat **{total_reminder} Satker** "
+            f"Terdapat **{len(daftar_tampil)} Satker** "
             "yang memenuhi kondisi untuk menerima reminder."
         )
 
+        elif pilihan_satker == "✅ Satker Tidak Perlu Reminder":
+
+        st.markdown(
+            "### ✅ Satker yang Tidak Perlu Menerima Reminder"
+        )
+
+        st.info(
+            f"Terdapat **{len(daftar_tampil)} Satker** "
+            "yang saat ini tidak perlu menerima reminder."
+        )
+
+        else:
+
+        st.markdown(
+            "### 📋 Semua Satker"
+        )
+
+        st.info(
+            f"Terdapat **{len(daftar_tampil)} Satker** "
+            "dalam daftar."
+        )
         # ========================================================
         # PESAN REMINDER
         # ========================================================
@@ -15592,8 +15624,7 @@ Atas kerja samanya diucapkan terima kasih 🙏"""
         # ========================================================
         # CARD SATKER
         # ========================================================
-        for satker in satker_perlu_reminder:
-
+        for satker in daftar_tampil:
             st.markdown(
                 '<div class="satker-card">',
                 unsafe_allow_html=True
