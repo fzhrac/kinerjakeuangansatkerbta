@@ -15338,30 +15338,75 @@ def page_notifikasi():
     st.write("### Data Satker")
 
     # ============================
-    # DATA DUMMY SATKER
+    # DATA DUMMY 10 SATKER
     # ============================
-    data_satker = {
-        "kode_satker": "SATKER001",
-        "nama": "Satker Contoh 1",
-        "no_wa": "6281273737616",
-        "sisa_hari": 2
-    }
-
-    st.write("**Kode Satker:**", data_satker["kode_satker"])
-    st.write("**Nama Satker:**", data_satker["nama"])
-    st.write("**Sisa hari:**", data_satker["sisa_hari"])
+    data_satker = [
+        {
+            "kode_satker": "SATKER001",
+            "nama": "Satker Contoh 1",
+            "no_wa": "6282379047217",
+            "sisa_hari": 2
+        },
+        {
+            "kode_satker": "SATKER002",
+            "nama": "Satker Contoh 2",
+            "no_wa": "6285764209323",
+            "sisa_hari": 1
+        },
+        {
+            "kode_satker": "SATKER003",
+            "nama": "Satker Contoh 3",
+            "no_wa": "6281273737616",
+            "sisa_hari": 2
+        },
+        {
+            "kode_satker": "SATKER004",
+            "nama": "Satker Contoh 4",
+            "no_wa": "6281234567801",
+            "sisa_hari": 5
+        },
+        {
+            "kode_satker": "SATKER005",
+            "nama": "Satker Contoh 5",
+            "no_wa": "6281234567802",
+            "sisa_hari": 7
+        },
+        {
+            "kode_satker": "SATKER006",
+            "nama": "Satker Contoh 6",
+            "no_wa": "6281234567803",
+            "sisa_hari": 10
+        },
+        {
+            "kode_satker": "SATKER007",
+            "nama": "Satker Contoh 7",
+            "no_wa": "6281234567804",
+            "sisa_hari": 4
+        },
+        {
+            "kode_satker": "SATKER008",
+            "nama": "Satker Contoh 8",
+            "no_wa": "6281234567805",
+            "sisa_hari": 8
+        },
+        {
+            "kode_satker": "SATKER009",
+            "nama": "Satker Contoh 9",
+            "no_wa": "6281234567806",
+            "sisa_hari": 6
+        },
+        {
+            "kode_satker": "SATKER010",
+            "nama": "Satker Contoh 10",
+            "no_wa": "6281234567807",
+            "sisa_hari": 12
+        }
+    ]
 
     # ============================
-    # TRIGGER NOTIFIKASI
+    # PESAN REMINDER
     # ============================
-    if data_satker["sisa_hari"] <= 2:
-
-        st.warning("⚠️ Satker memenuhi kondisi untuk reminder.")
-
-        # ============================
-        # PESAN REMINDER
-        # ============================
-        pesan = """*REMINDER*
+    pesan = """*REMINDER*
 
 Sehubungan dengan batas revolving UP yang sudah mendekati,
 izin mengingatkan agar Bapak/Ibu dapat segera mengajukan
@@ -15369,28 +15414,47 @@ revolving UP.
 
 Atas kerja samanya diucapkan terima kasih 🙏"""
 
-        st.text_area(
-            "Pesan Notifikasi",
-            value=pesan,
-            disabled=True
-        )
+    # ============================
+    # TAMPILKAN SEMUA SATKER
+    # ============================
+    for satker in data_satker:
+
+        st.markdown("---")
+
+        st.write("**Kode Satker:**", satker["kode_satker"])
+        st.write("**Nama Satker:**", satker["nama"])
+        st.write("**Sisa hari:**", satker["sisa_hari"])
 
         # ============================
-        # LINK WHATSAPP
+        # TRIGGER NOTIFIKASI
         # ============================
-        nomor = data_satker["no_wa"]
+        if satker["sisa_hari"] <= 2:
 
-        pesan_encoded = urllib.parse.quote(pesan)
+            st.warning("⚠️ Satker memenuhi kondisi untuk reminder.")
 
-        link_wa = f"https://wa.me/{nomor}?text={pesan_encoded}"
+            st.text_area(
+                "Pesan Notifikasi",
+                value=pesan,
+                disabled=True,
+                key=f"pesan_{satker['kode_satker']}"
+            )
 
-        st.markdown(
-            f"[📱 Buka WhatsApp dan Kirim Reminder]({link_wa})"
-        )
+            # ============================
+            # LINK WHATSAPP
+            # ============================
+            nomor = satker["no_wa"]
 
-    else:
+            pesan_encoded = urllib.parse.quote(pesan)
 
-        st.success("✅ Satker belum perlu menerima reminder.")
+            link_wa = f"https://wa.me/{nomor}?text={pesan_encoded}"
+
+            st.markdown(
+                f"[📱 Buka WhatsApp dan Kirim Reminder]({link_wa})"
+            )
+
+        else:
+
+            st.success("✅ Satker belum perlu menerima reminder.")
     
 # ===============================
 # MAIN APP
