@@ -12221,7 +12221,7 @@ def page_admin():
     # ===============================
     # 📌 TAB MENU
     # ===============================
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "📤 Tambah Data",
         "🗑️ Hapus Data",
         "📥 Download Data",
