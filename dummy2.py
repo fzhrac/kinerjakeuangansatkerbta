@@ -15641,56 +15641,24 @@ def page_notifikasi():
         margin-bottom: 25px;
     }
 
-    .summary-card {
+    .menu-card {
         border: 1px solid #e5e7eb;
         border-radius: 14px;
         padding: 20px;
-        text-align: center;
+        margin-bottom: 15px;
         background-color: white;
-        min-height: 115px;
     }
 
-    .summary-label {
-        font-size: 14px;
-        color: #6b7280;
+    .menu-title {
+        font-size: 20px;
+        font-weight: 700;
         margin-bottom: 8px;
     }
 
-    .summary-number {
-        font-size: 30px;
-        font-weight: 700;
-    }
-
-    .satker-card {
-        border: 1px solid #e5e7eb;
-        border-radius: 14px;
-        padding: 18px 20px;
-        margin: 12px 0;
-        background-color: white;
-    }
-
-    .satker-name {
-        font-size: 17px;
-        font-weight: 700;
-        margin-bottom: 5px;
-    }
-
-    .satker-code {
-        font-size: 13px;
+    .menu-description {
+        font-size: 14px;
         color: #6b7280;
-    }
-
-    .sisa-label {
-        text-align: center;
-        color: #6b7280;
-        font-size: 13px;
-    }
-
-    .sisa-value {
-        text-align: center;
-        font-size: 22px;
-        font-weight: 700;
-        margin-top: 4px;
+        line-height: 1.6;
     }
 
     </style>
@@ -15706,326 +15674,105 @@ def page_notifikasi():
 
     st.markdown(
         '<div class="notif-subtitle">'
-        'Monitoring Satker yang memenuhi kondisi untuk menerima reminder.'
+        'Pilih jenis notifikasi yang ingin diproses.'
         '</div>',
         unsafe_allow_html=True
     )
 
     # ============================================================
-    # DATA DUMMY
+    # PILIH JENIS NOTIFIKASI
     # ============================================================
-    data_satker = [
-        {
-            "kode_satker": "SATKER001",
-            "nama": "Satker Contoh 1",
-            "no_wa": "6282379047217",
-            "sisa_hari": 2
-        },
-        {
-            "kode_satker": "SATKER002",
-            "nama": "Satker Contoh 2",
-            "no_wa": "6285764209323",
-            "sisa_hari": 1
-        },
-        {
-            "kode_satker": "SATKER003",
-            "nama": "Satker Contoh 3",
-            "no_wa": "6281273737616",
-            "sisa_hari": 2
-        },
-        {
-            "kode_satker": "SATKER004",
-            "nama": "Satker Contoh 4",
-            "no_wa": "6281234567801",
-            "sisa_hari": 5
-        },
-        {
-            "kode_satker": "SATKER005",
-            "nama": "Satker Contoh 5",
-            "no_wa": "6281234567802",
-            "sisa_hari": 7
-        },
-        {
-            "kode_satker": "SATKER006",
-            "nama": "Satker Contoh 6",
-            "no_wa": "6281234567803",
-            "sisa_hari": 10
-        },
-        {
-            "kode_satker": "SATKER007",
-            "nama": "Satker Contoh 7",
-            "no_wa": "6281234567804",
-            "sisa_hari": 4
-        },
-        {
-            "kode_satker": "SATKER008",
-            "nama": "Satker Contoh 8",
-            "no_wa": "6281234567805",
-            "sisa_hari": 8
-        },
-        {
-            "kode_satker": "SATKER009",
-            "nama": "Satker Contoh 9",
-            "no_wa": "6281234567806",
-            "sisa_hari": 6
-        },
-        {
-            "kode_satker": "SATKER010",
-            "nama": "Satker Contoh 10",
-            "no_wa": "6281234567807",
-            "sisa_hari": 12
-        }
-    ]
-
-    # ============================================================
-    # TRIGGER REMINDER
-    # ============================================================
-    # Sementara hanya untuk testing.
-    # Nanti diganti menggunakan data asli.
-
-    satker_perlu_reminder = [
-        satker
-        for satker in data_satker
-        if satker["sisa_hari"] <= 2
-    ]
-
-    satker_tidak_perlu_reminder = [
-        satker
-        for satker in data_satker
-        if satker["sisa_hari"] > 2
-    ]
-
-    total_satker = len(data_satker)
-    total_reminder = len(satker_perlu_reminder)
-    total_normal = len(satker_tidak_perlu_reminder)
-
-    # ============================================================
-    # RINGKASAN
-    # ============================================================
-    st.markdown("### 📊 Ringkasan")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.markdown(
-            f"""
-            <div class="summary-card">
-                <div class="summary-label">
-                    Total Satker
-                </div>
-                <div class="summary-number">
-                    {total_satker}
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    with col2:
-        st.markdown(
-            f"""
-            <div class="summary-card">
-                <div class="summary-label">
-                    ⚠️ Perlu Reminder
-                </div>
-                <div class="summary-number">
-                    {total_reminder}
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    with col3:
-        st.markdown(
-            f"""
-            <div class="summary-card">
-                <div class="summary-label">
-                    ✅ Tidak Perlu Reminder
-                </div>
-                <div class="summary-number">
-                    {total_normal}
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    st.markdown("<br>", unsafe_allow_html=True)
-    # ============================================================
-    # PILIH DAFTAR SATKER
-    # ============================================================
-    pilihan_satker = st.selectbox(
-        "🔎 Tampilkan Daftar Satker",
+    pilihan_notifikasi = st.radio(
+        "Pilih Jenis Notifikasi",
         [
-            "⚠️ Satker Perlu Reminder",
-            "✅ Satker Tidak Perlu Reminder",
-            "📋 Semua Satker"
-        ]
+            "💰 UP",
+            "💰 TUP"
+        ],
+        horizontal=True
     )
 
+    st.markdown("<br>", unsafe_allow_html=True)
+
     # ============================================================
-    # TENTUKAN DAFTAR SATKER YANG DITAMPILKAN
+    # NOTIFIKASI UP
     # ============================================================
-
-    if pilihan_satker == "⚠️ Satker Perlu Reminder":
-
-        daftar_tampil = satker_perlu_reminder
-
-    elif pilihan_satker == "✅ Satker Tidak Perlu Reminder":
-
-        daftar_tampil = satker_tidak_perlu_reminder
-
-    else:
-
-        daftar_tampil = data_satker
-        
-    # ============================================================
-    # DAFTAR SATKER
-    # ============================================================
-
-    if pilihan_satker == "⚠️ Satker Perlu Reminder":
+    if pilihan_notifikasi == "💰 UP":
 
         st.markdown(
-            "### ⚠️ Satker yang Perlu Menerima Reminder"
+            """
+            <div class="menu-card">
+
+                <div class="menu-title">
+                    💰 Notifikasi Jatuh Tempo UP
+                </div>
+
+                <div class="menu-description">
+                    Sistem dapat memproses Data Monitoring UP
+                    yang bersumber dari Aplikasi MyIntress,
+                    Menu Bendahara → Karwas UP per Satker.
+                </div>
+
+            </div>
+            """,
+            unsafe_allow_html=True
         )
+
+        st.markdown("### 📂 Upload Data Monitoring UP")
 
         st.info(
-            f"Terdapat **{len(daftar_tampil)} Satker** "
-            "yang memenuhi kondisi untuk menerima reminder."
+            "Upload file Data Monitoring UP dari "
+            "MyIntress → Bendahara → Karwas UP per Satker."
         )
 
-    elif pilihan_satker == "✅ Satker Tidak Perlu Reminder":
-
-        st.markdown(
-            "### ✅ Satker yang Tidak Perlu Menerima Reminder"
+        file_up = st.file_uploader(
+            "Pilih file Monitoring UP",
+            type=["xlsx", "xls"],
+            key="upload_monitoring_up"
         )
 
-        st.info(
-            f"Terdapat **{len(daftar_tampil)} Satker** "
-            "yang saat ini tidak perlu menerima reminder."
-        )
+        if file_up is not None:
 
-    else:
-
-        st.markdown(
-            "### 📋 Semua Satker"
-        )
-
-        st.info(
-            f"Terdapat **{len(daftar_tampil)} Satker** "
-            "dalam daftar."
-        )
-        # ========================================================
-        # PESAN REMINDER
-        # ========================================================
-        pesan = """*REMINDER*
-
-Sehubungan dengan batas revolving UP yang sudah mendekati,
-izin mengingatkan agar Bapak/Ibu dapat segera mengajukan
-revolving UP.
-
-Atas kerja samanya diucapkan terima kasih 🙏"""
-
-        # ========================================================
-        # CARD SATKER
-        # ========================================================
-        for satker in daftar_tampil:
-            st.markdown(
-                '<div class="satker-card">',
-                unsafe_allow_html=True
+            st.success(
+                f"File berhasil dipilih: **{file_up.name}**"
             )
 
-            col1, col2, col3 = st.columns([4, 2, 2])
-
-            # ----------------------------------------------------
-            # INFORMASI SATKER
-            # ----------------------------------------------------
-            with col1:
-
-                st.markdown(
-                    f"""
-                    <div class="satker-name">
-                        {satker["nama"]}
-                    </div>
-
-                    <div class="satker-code">
-                        Kode Satker: {satker["kode_satker"]}
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-            # ----------------------------------------------------
-            # SISA WAKTU
-            # ----------------------------------------------------
-            with col2:
-
-                st.markdown(
-                    f"""
-                    <div class="sisa-label">
-                        Sisa Waktu
-                    </div>
-
-                    <div class="sisa-value">
-                        ⚠️ {satker["sisa_hari"]} hari
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-            # ----------------------------------------------------
-            # LINK WHATSAPP
-            # ----------------------------------------------------
-            with col3:
-
-                nomor = satker["no_wa"]
-
-                pesan_encoded = urllib.parse.quote(pesan)
-
-                link_wa = (
-                    f"https://wa.me/{nomor}"
-                    f"?text={pesan_encoded}"
-                )
-
-                st.markdown(
-                    f"""
-                    <div style="text-align:center; padding-top:8px;">
-                        <a href="{link_wa}"
-                           target="_blank"
-                           style="
-                           text-decoration:none;
-                           background:#25D366;
-                           color:white;
-                           padding:10px 16px;
-                           border-radius:8px;
-                           font-weight:600;
-                           display:inline-block;">
-                           📱 Kirim Reminder
-                        </a>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-
-            st.markdown(
-                "</div>",
-                unsafe_allow_html=True
-            )
-
-            # ----------------------------------------------------
-            # DETAIL PESAN
-            # ----------------------------------------------------
-            with st.expander(
-                f"💬 Lihat pesan - {satker['kode_satker']}"
+            if st.button(
+                "⚙️ Proses Data UP",
+                use_container_width=True
             ):
 
-                st.text_area(
-                    "Pesan Notifikasi",
-                    value=pesan,
-                    disabled=True,
-                    key=f"pesan_{satker['kode_satker']}"
+                st.info(
+                    "Fitur processing Data Monitoring UP "
+                    "sedang dipersiapkan."
                 )
+
+    # ============================================================
+    # NOTIFIKASI TUP
+    # ============================================================
+    elif pilihan_notifikasi == "💰 TUP":
+
+        st.markdown(
+            """
+            <div class="menu-card">
+
+                <div class="menu-title">
+                    💰 Notifikasi TUP
+                </div>
+
+                <div class="menu-description">
+                    Fitur notifikasi TUP sedang dalam tahap
+                    pengembangan.
+                </div>
+
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        st.info(
+            "Placeholder — fitur Notifikasi TUP "
+            "akan dikembangkan selanjutnya."
+        )
     
 # ===============================
 # MAIN APP
