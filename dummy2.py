@@ -15863,6 +15863,23 @@ def page_notifikasi():
             "📋 Semua Satker"
         ]
     )
+
+    # ============================================================
+    # TENTUKAN DAFTAR SATKER YANG DITAMPILKAN
+    # ============================================================
+
+    if pilihan_satker == "⚠️ Satker Perlu Reminder":
+
+        daftar_tampil = satker_perlu_reminder
+
+    elif pilihan_satker == "✅ Satker Tidak Perlu Reminder":
+
+        daftar_tampil = satker_tidak_perlu_reminder
+
+    else:
+
+        daftar_tampil = data_satker
+        
     # ============================================================
     # DAFTAR SATKER
     # ============================================================
