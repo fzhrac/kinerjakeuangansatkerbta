@@ -15589,7 +15589,7 @@ def page_notifikasi():
             "yang memenuhi kondisi untuk menerima reminder."
         )
 
-        elif pilihan_satker == "✅ Satker Tidak Perlu Reminder":
+    elif pilihan_satker == "✅ Satker Tidak Perlu Reminder":
 
         st.markdown(
             "### ✅ Satker yang Tidak Perlu Menerima Reminder"
@@ -15600,7 +15600,7 @@ def page_notifikasi():
             "yang saat ini tidak perlu menerima reminder."
         )
 
-        else:
+    else:
 
         st.markdown(
             "### 📋 Semua Satker"
