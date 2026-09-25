@@ -15562,11 +15562,11 @@ def page_admin():
                             hide_index=True
                         )
 
-                except Exception as e:
+            except Exception as e:
 
-                    st.error(
-                        f"❌ Gagal membaca file kontak: {e}"
-                    )
+                st.error(
+                    f"❌ Gagal membaca file kontak: {e}"
+                )
 
 
 def show_loading_logo():
