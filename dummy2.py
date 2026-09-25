@@ -12226,7 +12226,8 @@ def page_admin():
         "🗑️ Hapus Data",
         "📥 Download Data",
         "📋 Download Template",
-        "🕓 Riwayat Aktivitas"
+        "🕓 Riwayat Aktivitas",
+        "📱 Kontak Satker"
     ])
 
     # ============================================================
@@ -15278,6 +15279,294 @@ def page_admin():
         if st.button("🧹 Bersihkan Riwayat Aktivitas"):
             st.session_state.activity_log.clear()
             st.success("Riwayat aktivitas berhasil dibersihkan.")
+            
+    # ============================================================
+    # TAB 6: KONTAK SATKER
+    # ============================================================
+    with tab6:
+
+        st.subheader("📱 Import Data Kontak Satker")
+
+        st.caption(
+            "Import data kontak WhatsApp Satker berdasarkan "
+            "kode Satker dan nomor WhatsApp."
+        )
+
+        # ========================================================
+        # UPLOAD FILE CSV
+        # ========================================================
+        uploaded_kontak = st.file_uploader(
+            "Pilih file CSV kontak Satker",
+            type=["csv"],
+            key="upload_kontak_satker"
+        )
+
+        if uploaded_kontak is not None:
+
+            try:
+
+                # ==================================================
+                # BACA FILE
+                # ==================================================
+                kontak_baru = pd.read_csv(
+                    uploaded_kontak,
+                    dtype={
+                        "kode_satker": str,
+                        "nomor_wa": str
+                    }
+                )
+
+                # ==================================================
+                # CEK KOLOM WAJIB
+                # ==================================================
+                kolom_wajib = [
+                    "kode_satker",
+                    "nomor_wa"
+                ]
+
+                kolom_kurang = [
+                    col
+                    for col in kolom_wajib
+                    if col not in kontak_baru.columns
+                ]
+
+                if kolom_kurang:
+
+                    st.error(
+                        "❌ Kolom wajib tidak ditemukan: "
+                        + ", ".join(kolom_kurang)
+                    )
+
+                    st.stop()
+
+                # ==================================================
+                # NORMALISASI DATA
+                # ==================================================
+                kontak_baru["kode_satker"] = (
+                    kontak_baru["kode_satker"]
+                    .fillna("")
+                    .astype(str)
+                    .str.strip()
+                )
+
+                kontak_baru["nomor_wa"] = (
+                    kontak_baru["nomor_wa"]
+                    .fillna("")
+                    .astype(str)
+                    .str.strip()
+                )
+
+                # ==================================================
+                # VALIDASI KODE SATKER
+                # HARUS TEPAT 6 DIGIT
+                # ==================================================
+                valid_kode = (
+                    kontak_baru["kode_satker"]
+                    .str.fullmatch(r"\d{6}")
+                )
+
+                # ==================================================
+                # VALIDASI NOMOR WHATSAPP
+                # FORMAT: 628xxxxxxxx
+                # ==================================================
+                valid_wa = (
+                    kontak_baru["nomor_wa"]
+                    .str.fullmatch(r"628\d{8,12}")
+                )
+
+                # ==================================================
+                # STATUS VALIDASI
+                # ==================================================
+                kontak_baru["valid"] = (
+                    valid_kode & valid_wa
+                )
+
+                # ==================================================
+                # PISAHKAN DATA VALID DAN TIDAK VALID
+                # ==================================================
+                kontak_valid = kontak_baru[
+                    kontak_baru["valid"]
+                ].copy()
+
+                kontak_tidak_valid = kontak_baru[
+                    ~kontak_baru["valid"]
+                ].copy()
+
+                # ==================================================
+                # HAPUS KOLOM BANTU
+                # ==================================================
+                kontak_valid = kontak_valid.drop(
+                    columns=["valid"],
+                    errors="ignore"
+                )
+
+                kontak_tidak_valid = kontak_tidak_valid.drop(
+                    columns=["valid"],
+                    errors="ignore"
+                )
+
+                # ==================================================
+                # ANTI DOUBLE DALAM FILE UPLOAD
+                #
+                # UNIQUE KEY:
+                # kode_satker + nomor_wa
+                # ==================================================
+                kontak_valid = kontak_valid.drop_duplicates(
+                    subset=[
+                        "kode_satker",
+                        "nomor_wa"
+                    ],
+                    keep="last"
+                )
+
+                # ==================================================
+                # RINGKASAN HASIL VALIDASI
+                # ==================================================
+                st.divider()
+
+                col1, col2, col3 = st.columns(3)
+
+                with col1:
+                    st.metric(
+                        "📄 Total Upload",
+                        len(kontak_baru)
+                    )
+
+                with col2:
+                    st.metric(
+                        "✅ Data Valid",
+                        len(kontak_valid)
+                    )
+
+                with col3:
+                    st.metric(
+                        "⚠️ Tidak Valid",
+                        len(kontak_tidak_valid)
+                    )
+
+                # ==================================================
+                # PREVIEW DATA VALID
+                # ==================================================
+                if not kontak_valid.empty:
+
+                    st.markdown(
+                        "### 👀 Preview Data Valid"
+                    )
+
+                    st.dataframe(
+                        kontak_valid,
+                        use_container_width=True,
+                        hide_index=True
+                    )
+
+                # ==================================================
+                # DATA TIDAK VALID
+                # ==================================================
+                if not kontak_tidak_valid.empty:
+
+                    with st.expander(
+                        "⚠️ Lihat Data Tidak Valid"
+                    ):
+
+                        st.dataframe(
+                            kontak_tidak_valid,
+                            use_container_width=True,
+                            hide_index=True
+                        )
+
+                # ==================================================
+                # TOMBOL IMPORT
+                # ==================================================
+                if not kontak_valid.empty:
+
+                    st.divider()
+
+                    if st.button(
+                        "📥 Import Kontak Satker",
+                        type="primary",
+                        key="btn_import_kontak_satker"
+                    ):
+
+                        # ==========================================
+                        # BUAT DATABASE SESSION JIKA BELUM ADA
+                        # ==========================================
+                        if "kontak_satker" not in st.session_state:
+
+                            st.session_state.kontak_satker = pd.DataFrame(
+                                columns=[
+                                    "kode_satker",
+                                    "nomor_wa"
+                                ]
+                            )
+
+                        # ==========================================
+                        # AMBIL DATA LAMA
+                        # ==========================================
+                        kontak_lama = (
+                            st.session_state.kontak_satker.copy()
+                        )
+
+                        # ==========================================
+                        # GABUNG DATA LAMA + DATA BARU
+                        # ==========================================
+                        kontak_gabungan = pd.concat(
+                            [
+                                kontak_lama,
+                                kontak_valid
+                            ],
+                            ignore_index=True
+                        )
+
+                        # ==========================================
+                        # ANTI DOUBLE
+                        #
+                        # SATU NOMOR BOLEH TERKAIT
+                        # DENGAN BEBERAPA SATKER
+                        #
+                        # SATU SATKER JUGA BOLEH PUNYA
+                        # BEBERAPA NOMOR
+                        # ==========================================
+                        kontak_gabungan = (
+                            kontak_gabungan
+                            .drop_duplicates(
+                                subset=[
+                                    "kode_satker",
+                                    "nomor_wa"
+                                ],
+                                keep="last"
+                            )
+                        )
+
+                        # ==========================================
+                        # SIMPAN
+                        # ==========================================
+                        st.session_state.kontak_satker = (
+                            kontak_gabungan
+                        )
+
+                        # ==========================================
+                        # HASIL IMPORT
+                        # ==========================================
+                        st.success(
+                            "✅ Data kontak Satker berhasil diimport."
+                        )
+
+                        st.write(
+                            "Total kontak tersimpan: "
+                            f"**{len(kontak_gabungan)}**"
+                        )
+
+                        st.dataframe(
+                            kontak_gabungan,
+                            use_container_width=True,
+                            hide_index=True
+                        )
+
+                except Exception as e:
+
+                    st.error(
+                        f"❌ Gagal membaca file kontak: {e}"
+                    )
 
 
 def show_loading_logo():
